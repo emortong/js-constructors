@@ -9,7 +9,7 @@
  * @property {number} cost
  * @property {string} description
  * @method   getDetails
- */
+
 
   /**
    * Returns a string of all of the spell's details.
@@ -18,6 +18,17 @@
    * @name getDetails
    * @return {string} details containing all of the spells information.
    */
+
+function Spell(name, cost, description) {
+  this.name = name;
+  this.cost = cost;
+  this.description = description;
+}
+
+Spell.prototype.getDetails = function() {
+  var spellInfo = this.name + " " + this.cost + " " + this.description;
+  return spellInfo;
+}
 
 /**
  * A spell that deals damage.
@@ -44,6 +55,15 @@
  * @property {string} description
  */
 
+DamageSpell.prototype = Object.create(Spell.prototype, {
+  constructor: DamageSpell
+});
+
+function DamageSpell(name, cost, damage, description) {
+  Spell.call(this, name, cost, description);
+  this.damage = damage;
+}
+
 /**
  * Now that you've created some spells, let's create
  * `Spellcaster` objects that can use them!
@@ -60,6 +80,17 @@
  * @method  spendMana
  * @method  invoke
  */
+
+function Spellcaster(name, health, mana) {
+  this.name = name;
+  this.health = health;
+  this.mana = mana;
+  this.isAlive = true;
+}
+
+Spellcaster.prototype.inflictDamage = function(damage) {
+
+}
 
   /**
    * @method inflictDamage
