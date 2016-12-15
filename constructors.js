@@ -88,10 +88,6 @@ function Spellcaster(name, health, mana) {
   this.isAlive = true;
 }
 
-Spellcaster.prototype.inflictDamage = function(damage) {
-
-}
-
   /**
    * @method inflictDamage
    *
@@ -103,6 +99,16 @@ Spellcaster.prototype.inflictDamage = function(damage) {
    * @param  {number} damage  Amount of damage to deal to the spellcaster
    */
 
+Spellcaster.prototype.inflictDamage = function(damage) {
+  if(damage >= this.health) {
+    this.health = 0
+    this.isAlive = false;
+  }  else {
+      this.health -= damage;
+    }
+
+}
+
   /**
    * @method spendMana
    *
@@ -112,6 +118,15 @@ Spellcaster.prototype.inflictDamage = function(damage) {
    * @param  {number} cost      The amount of mana to spend.
    * @return {boolean} success  Whether mana was successfully spent.
    */
+
+Spellcaster.prototype.spendMana = function(cost) {
+  if(this.mana >= cost) {
+    this.mana -= cost;
+    return true;
+  } else {
+    return false;
+  }
+};
 
   /**
    * @method invoke
@@ -139,3 +154,39 @@ Spellcaster.prototype.inflictDamage = function(damage) {
    * @param  {Spellcaster} target         The spell target to be inflicted.
    * @return {boolean}                    Whether the spell was successfully cast.
    */
+
+
+Spellcaster.prototype.invoke = function(spellOrDamageSpell, target) {
+
+  if(spellOrDamageSpell instanceof (DamageSpell) && (target != null|| target != undefined)) {
+    if(this.mana >= spellOrDamageSpell.cost) {
+      console.log(target.health)
+      target.inflictDamage(spellOrDamageSpell.damage);
+      console.log(target.health)
+      this.spendMana(spellOrDamageSpell.cost);
+      console.log('true 1: ');
+      return true;
+    } else {
+        return false;
+      }
+
+    } else if(spellOrDamageSpell instanceof (Spell) && !(spellOrDamageSpell instanceof (DamageSpell))) {
+        if(this.mana >= spellOrDamageSpell.cost) {
+          this.spendMana(spellOrDamageSpell.cost)
+          console.log('true2: ');
+          return true;
+        } else {
+          return false;
+        }
+
+      } else {
+          return false;
+        }
+
+}
+
+// var estefania = new Spellcaster("estefania", 300, 300);
+// var makeInvisible = new DamageSpell("makeInvisible", 12, 23, "makes invisible")
+
+// console.log(estefania.invoke(makeInvisible));
+
